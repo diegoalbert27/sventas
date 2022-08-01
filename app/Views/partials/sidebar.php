@@ -42,36 +42,49 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-copy"></i>
-                        <p>
-                            Nomina
-                            <i class="fas fa-angle-left right"></i>
-                            <!-- <span class="badge badge-info right">6</span> -->
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="/employees" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Empleados</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/providers" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Proveedores</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/customers" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Clientes</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                <?php if ((int)$_SESSION['role_id'] === 2) { ?>
+                    <li class="nav-item">
+                        <a href="/customer" class="nav-link">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p>
+                                Clientes
+                                <!-- <span class="right badge badge-danger">New</span> -->
+                            </p>
+                        </a>
+                    </li>
+                <?php } ?>
+                <?php if ((int)$_SESSION['role_id'] === 1) { ?>
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-copy"></i>
+                            <p>
+                                Nomina
+                                <i class="fas fa-angle-left right"></i>
+                                <!-- <span class="badge badge-info right">6</span> -->
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/employees" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Empleados</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/providers" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Proveedores</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/customers" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Clientes</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                <?php } ?>
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-chart-pie"></i>
@@ -114,12 +127,14 @@
                                 <p>Reportes</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="pages/UI/icons.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Auditoria</p>
-                            </a>
-                        </li>
+                        <?php if ($_SESSION['role_id'] === 1) { ?>
+                            <li class="nav-item">
+                                <a href="pages/UI/icons.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Auditoria</p>
+                                </a>
+                            </li>
+                        <?php } ?>
                     </ul>
                 </li>
             </ul>

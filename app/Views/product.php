@@ -39,16 +39,18 @@
                                         <i class="fas fa-chart-pie mr-1"></i>
                                         Lista y administracion de productos
                                     </h3>
-                                    <div class="card-tools">
-                                        <ul class="nav nav-pills ml-auto">
-                                            <li class="nav-item">
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg">
-                                                    <span class="fas fa-plus"></span>
-                                                    Añadir nuevo producto
-                                                </button>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <?php if ($_SESSION['role_id'] === 1) { ?>
+                                        <div class="card-tools">
+                                            <ul class="nav nav-pills ml-auto">
+                                                <li class="nav-item">
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg">
+                                                        <span class="fas fa-plus"></span>
+                                                        Añadir nuevo producto
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    <?php } ?>
                                 </div><!-- /.card-header -->
                                 <div class="card-body table-responsive">
                                     <table class="table" id="table">
@@ -63,7 +65,9 @@
                                                 <th>Categoria</th>
                                                 <th>Cantidad</th>
                                                 <th>Estado</th>
+                                                <?php if ($_SESSION['role_id'] === 2 || $_SESSION['role_id'] === 1) { ?>
                                                 <th>Acciones</th>
+                                                <?php } ?>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -252,7 +256,9 @@
                     btnGroups.className = 'btn-group'
                     btnGroups.appendChild(btnRemove)
 
-                    row.children[9].appendChild(btnGroups)
+                    <?php if ($_SESSION['role_id'] === 2 || $_SESSION['role_id'] === 1) { ?>
+                        row.children[9].appendChild(btnGroups)
+                    <?php } ?>
                 })
               })
               .fail(err => console.log(err))

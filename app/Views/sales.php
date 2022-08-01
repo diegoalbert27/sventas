@@ -80,7 +80,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <p class="card-text"><b>Cliente:</b></p>
-                                <p class="card-text" id="cliente"></p>
+                                <p class="card-text" id="client"></p>
                                 <p class="card-text"><b>Fecha:</b></p>
                                 <p class="card-text" id="date"></p>
                             </div>
@@ -88,12 +88,12 @@
                                 <p class="card-text"><b>Factura:</b></p>
                                 <p class="card-text" id="factura"></p>
                                 <p class="card-text"><b>Monto:</b></p>
-                                <p class="card-text" id="cliente"></p>
+                                <p class="card-text" id="monto"></p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="table-responsive">
-                                <table class="table" id="table">
+                            <div class="table-responsive mt-3">
+                                <table class="table" id="table-products">
                                     <thead>
                                         <tr>
                                             <th>Producto</th>
@@ -110,7 +110,6 @@
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                         <input type="hidden" name="id-modal" id="id-modal">
-                        <button type="button" class="btn btn-danger" id="btn-modal-remove">Si, estoy seguro</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -149,10 +148,45 @@
                     btnView.setAttribute('data-target', '#modal-view')
                     btnView.className = 'btn btn-primary'
                     btnView.innerHTML = `
-                        <span class="fas fa-trash"></span>
+                        <span class="fas fa-eye"></span>
                     `
                     btnView.onclick = () => {
-                        
+                        const client = document.getElementById('client')
+                        const date = document.getElementById('date')
+                        const factura = document.getElementById('factura')
+                        const monto = document.getElementById('monto')
+                        const tableProducts = document.getElementById('table-products')
+
+                        Array.from(tableProducts.children[0].children)
+                            .forEach((r, i) => {
+                                if (i > 0) {
+                                    r.remove()
+                                }
+                            })
+
+                        client.innerText = sale.client
+                        date.innerText = sale.date_created
+                        factura.innerText = sale.factura.toUpperCase()
+                        monto.innerText = sale.mount
+                        console.log(sales)
+                        const products = sales
+                            .filter(s => s.client === sale.client)
+                            .map(s => s.product)
+
+                        products.forEach(id => {
+                            $.get('/api/products')
+                                .done(res => {
+                                    const productsDetails = JSON.parse(res)
+                                    const product = productsDetails.find(p => p.id === id)
+                                    const rowProduct = tableProducts.insertRow()
+                                    rowProduct.setAttribute('id', id)
+                                    rowProduct.innerHTML = `
+                                        <td>${product.name}</td>
+                                        <td>${sale.amount}</td>
+                                        <td>${sale.mount}</td>
+                                    `
+                                })
+                        })
                     }
 
                     const btnGroups = document.createElement('div')
