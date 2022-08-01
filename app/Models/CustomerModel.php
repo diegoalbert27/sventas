@@ -104,6 +104,51 @@ class CustomerModel
     }
 
     /**
+     * findName function
+     *
+     * @param string $name
+     * @param string $value
+     * @return Customer
+     */
+    public function findName(string $name, string $value)
+    {
+        $conn = Database::getInstance();
+
+        try {
+            $sql = "SELECT * FROM {$this->table} WHERE {$name} = :value;";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':value', $value);
+            $stmt->execute();
+
+            $stmt->setFetchMode(\PDO::FETCH_CLASS, Customer::class);
+            $customer = $stmt->fetch();
+
+            return $customer;
+        } catch (\PDOException $e) {
+            if ($_ENV['ENVIRONMENT'] != "production") {
+                die("DataBase Error: The Customer could not be found.<br>{$e->getMessage()}");
+            } else {
+                $log = new Logger('App');
+                $log->pushHandler(new StreamHandler(__DIR__ . './../../logs/errors.log', Logger::ERROR));
+
+                $log->error($e->getMessage(), $e->getTrace());
+            }
+        } catch (\Throwable $e) {
+            if ($_ENV['ENVIRONMENT'] != "production") {
+                die("General Error: The Customer could not be found.<br>{$e->getMessage()}");
+            } else {
+                $log = new Logger('App');
+                $log->pushHandler(new StreamHandler(__DIR__ . './../../logs/errors.log', Logger::ERROR));
+
+                $log->error($e->getMessage(), $e->getTrace());
+            }
+        } finally {
+            // Destroy the database connection
+            $conn = null;
+        }
+    }
+
+    /**
      * findAll function
      *
      * @return array
