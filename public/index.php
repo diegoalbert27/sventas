@@ -12,6 +12,8 @@ use App\Controllers\CategoryController;
 use App\Controllers\TypeController;
 use App\Controllers\SalesController;
 
+use App\Controllers\TaskController;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
@@ -47,6 +49,14 @@ $context->fromRequest($request);
 
 // Create the router container and get the routing map.
 $routes = new RouteCollection();
+
+$routes->add('task', new Route(
+    'task',
+    [
+        'controller' => TaskController::class,
+        'method' => 'sync'
+    ]
+));
 
 // Add the routes to the map, and a handler for it.
 $routes->add('index', new Route(
